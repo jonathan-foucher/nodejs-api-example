@@ -1,5 +1,6 @@
 import express from 'express'
 import * as logger from './utils/logger.js'
+import * as dbConnection from './db-connection.js'
 
 const port = process.env.HTTP_PORT || 8080
 const app = express()
@@ -7,7 +8,8 @@ app.use(express.json())
 
 app.get('/api/movies', (req, res) => {
     logger.info('Get all movies')
-    res.end()
+    dbConnection.getAllMovies()
+      .then(movies => res.json(movies))
   })
   .post('/api/movies', (req, res) => {
     logger.info(`Post movie ${req.body}`)
