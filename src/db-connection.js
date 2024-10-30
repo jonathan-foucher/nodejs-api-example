@@ -45,7 +45,9 @@ const getAllMovies = () => movieTable.findAll()
 
 const saveMovie = (movie) => movieTable.upsert(movie)
 
+const deleteMoveById = (id) => movieTable.destroy({ where: { id } })
+
 process.on('SIGTERM', () => sequelize.close()
     .then(() => logger.info('Database pool shut down')))
 
-export { getAllMovies, saveMovie }
+export { getAllMovies, saveMovie, deleteMoveById }
