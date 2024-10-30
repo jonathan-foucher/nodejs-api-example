@@ -6,17 +6,19 @@ const DB_PORT = process.env.DB_PORT
 const DB_NAME = process.env.DB_NAME
 const DB_USER = process.env.DB_USER
 const DB_PASSWORD = process.env.DB_PASSWORD
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`)
+const sequelize = new Sequelize(
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+  { logging: false },
+)
 
-try {
-  await sequelize.authenticate()
-  logger.info('Connected to the database')
-} catch (error) {
-  logger.error('Failed to connect to the database :')
-  logger.error(error)
-}
+sequelize.authenticate()
+  .then(() => logger.info('Connected to the database'))
+  .catch((error) => {
+    logger.error('Failed to connect to the database :')
+    logger.error(error)
+  })
 
-const movie = sequelize.define(
+const movieTable = sequelize.define(
   'movie',
   {
     id: {
@@ -27,22 +29,23 @@ const movie = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    releaseDate: {
+    release_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
   },
   {
     sequelize,
-    underscored: true,
     timestamps: false,
-    tableName: 'movie'
+    tableName: 'movie',
   },
 )
 
-const getAllMovies = () => movie.findAll()
+const getAllMovies = () => movieTable.findAll()
+
+const saveMovie = (movie) => movieTable.upsert(movie)
 
 process.on('SIGTERM', () => sequelize.close()
     .then(() => logger.info('Database pool shut down')))
 
-export { getAllMovies }
+export { getAllMovies, saveMovie }

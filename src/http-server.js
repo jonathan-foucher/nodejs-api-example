@@ -13,7 +13,8 @@ app.get('/api/movies', (req, res) => {
   })
   .post('/api/movies', (req, res) => {
     logger.info(`Post movie ${req.body}`)
-    res.end()
+    dbConnection.saveMovie(req.body)
+      .then(() => res.end())
   })
   .delete('/api/movies/:movieId', (req, res) => {
     logger.info(`Delete movie ${req.params.movieId}`)
