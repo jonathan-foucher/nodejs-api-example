@@ -33,7 +33,7 @@ const movieTable = sequelize.define(
       allowNull: false,
     },
     release_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   },
