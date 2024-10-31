@@ -18,6 +18,9 @@ sequelize.authenticate()
     logger.error(error)
   })
 
+process.on('SIGTERM', () => sequelize.close()
+    .then(() => logger.info('Database pool shut down')))
+
 const movieTable = sequelize.define(
   'movie',
   {
@@ -41,13 +44,12 @@ const movieTable = sequelize.define(
   },
 )
 
+movieTable.sync()
+
 const getAllMovies = () => movieTable.findAll()
 
 const saveMovie = (movie) => movieTable.upsert(movie)
 
 const deleteMoveById = (id) => movieTable.destroy({ where: { id } })
-
-process.on('SIGTERM', () => sequelize.close()
-    .then(() => logger.info('Database pool shut down')))
 
 export { getAllMovies, saveMovie, deleteMoveById }
