@@ -1,5 +1,5 @@
 ## Introduction
-This project is an example of Node.js API with express and a postgres database.
+This project is an example of Node.js API with express, sequelize and a postgres database.
 
 ## Run the project
 ### Database
@@ -9,14 +9,14 @@ docker run -p 5432:5432 -e POSTGRES_DB=my_database -e POSTGRES_USER=postgres -e 
 ```
 
 ### Application
-Once the postgres database is launched, you can start the Spring Boot project and try it out.
+Once the postgres database is started, you can start the Node.js project and try it out.
 
 Start the application
 ```
 node src/index.js
 ```
 
-Get all movies
+Get all the movies
 ```
 curl --location 'http://localhost:3000/api/movies'
 ```
